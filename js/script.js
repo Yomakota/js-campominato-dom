@@ -21,39 +21,109 @@ playBtn.addEventListener('click', start);
 
 function start () {
 
-    let gameLevel = parseInt(prompt('Scegli difficoltà 1-2-3'));
-    while (gameLevel < 1 || gameLevel > 3) {
-        gameLevel = parseInt(prompt('Scegli difficoltà 1-2-3'));
-    }
-    console.log(gameLevel);
+    const grid = document.getElementById('grid');
 
+    grid.innerHTML = '';
+    grid.className = '';
+
+    const bombsNum = 16;
+    const minRange = 1;
+
+    let gameLevel = document.getElementById('level').value;
     let gameRangeNum;
+    let gridLevel;
 
     // Livello di difficoltà cambia range di numeri con cui giocare:
     switch (gameLevel) {
-        case 1:
+        case '1':
             gameRangeNum = 100;
+            gridLevel = 'easy';
             break;
-        case 2:
+        case '2':
             gameRangeNum = 81;
+            gridLevel = 'hard';
             break;
-        case 3:
+        case '3':
             gameRangeNum = 49;
+            gridLevel = 'crazy';
             break;
     }
 
     console.log(gameRangeNum);
 
-    const bombsNum = 16;
-    const minRange = 1;
     const bombs = generateBomb(bombsNum, minRange, gameRangeNum);
     console.log(bombs);
 
-    const numAttempts = gameRangeNum - bombsNum;
-    // console.log(numAttempts);
+    const numAttempts = gameRangeNum - bombsNum;    console.log(numAttempts);
 
-    // const userAttempts = [];
+    const userAttempts = [];
 
-    // let winner;
-    // let lost = false;
+    generateGrid();
+
+    function generateGrid() {
+        // aggiungere classe alla griglia per decidere livello
+        grid.classList.add(gridLevel);
+
+        for (let i = 1; i <= gameRangeNum; i++) {
+            const cell = document.createElement('div');
+            cell.innerHTML = `<span>${i}</span>`;
+            cell.classList.add('square');
+            cell.addEventListener('click', squareClick);
+
+            grid.append(cell);
+        }
+    }
+
+    function squareClick() {
+
+
+        this.classList.add('clicked');
+        let attempts = this.innerText;
+        console.log(attempts);
+        
+
+        let bombNum = parseInt(this.querySelector('span').innerHTML);
+        console.log(bombNum);
+
+        if (bombs.includes(bombNum)) {
+            this.classList.add('bomb');
+            grid.classList.add('no-pointer');
+            alert('hai perso');
+
+        } else {
+
+            if (!userAttempts.includes(attempts)) {
+                userAttempts.push(attempts);
+                console.log(userAttempts);
+
+            }
+
+            if (userAttempts.length == numAttempts ) {
+                console.log(userAttempts);
+                alert('hai vinto');
+            }
+
+        }
+    }
+}
+
+// function per numero random per generare con bombe
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// creo bombe ossia un array di 16 elementi random e unici
+function generateBomb(numBombs, minRange, maxRange) {
+
+    const numArray = [];
+
+    while (numArray.length < numBombs) {
+
+        const numRand = getRndInteger(minRange, maxRange);
+
+        if (!numArray.includes(numRand)) {
+            numArray.push(numRand);
+        }
+    }
+    return numArray;
 }
