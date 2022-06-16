@@ -22,6 +22,7 @@ playBtn.addEventListener('click', start);
 function start () {
 
     const grid = document.getElementById('grid');
+    const messCont = document.getElementById('message');
 
     grid.innerHTML = '';
     grid.className = '';
@@ -91,7 +92,7 @@ function start () {
             let message = document.createElement('div');
             message = document.innerHTML = `Peccato hai perso :-( Hai azzeccato ${userAttempts.length} tentativi.Gioca ancora`;
             console.log('message');
-            grid.append(message);
+            messCont.append(message);
 
         } else {
 
@@ -105,7 +106,7 @@ function start () {
                 let message = document.createElement('div');
                 message = document.innerHTML = `Congratulazioni,HAI VINTO.Il tuo punteggio è ${userAttempts.length * 10}.Gioca ancora`;
                 console.log('message');
-                grid.append(message);
+                messCont.append(message);
             }
 
         }

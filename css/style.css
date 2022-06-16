@@ -26,7 +26,8 @@
 
 main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     background-color: aquamarine;
     height: calc(100vh - 100px);
@@ -40,6 +41,8 @@ main {
     width: 500px;
     height: 500px;
 }
+
+.message {}
 
 .square {
     display: flex;
