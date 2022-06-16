@@ -54,7 +54,7 @@ function start () {
     const bombs = generateBomb(bombsNum, minRange, gameRangeNum);
     console.log(bombs);
 
-    const numAttempts = gameRangeNum - bombsNum;    console.log(numAttempts);
+    const numAttempts = gameRangeNum - bombsNum;   console.log(numAttempts);
 
     const userAttempts = [];
 
@@ -88,19 +88,24 @@ function start () {
         if (bombs.includes(bombNum)) {
             this.classList.add('bomb');
             grid.classList.add('no-pointer');
-            alert('hai perso');
+            let message = document.createElement('div');
+            message = document.innerHTML = `Peccato hai perso :-( Hai azzeccato ${userAttempts.length} tentativi.Gioca ancora`;
+            console.log('message');
+            grid.append(message);
 
         } else {
 
             if (!userAttempts.includes(attempts)) {
                 userAttempts.push(attempts);
                 console.log(userAttempts);
-
             }
 
             if (userAttempts.length == numAttempts ) {
                 console.log(userAttempts);
-                alert('hai vinto');
+                let message = document.createElement('div');
+                message = document.innerHTML = `Congratulazioni,HAI VINTO.Il tuo punteggio è ${userAttempts.length * 10}.Gioca ancora`;
+                console.log('message');
+                grid.append(message);
             }
 
         }

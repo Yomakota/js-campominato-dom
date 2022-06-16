@@ -4,16 +4,10 @@
     box-sizing: border-box;
 }
 
-
-/* body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-} */
-
 .header-container {
     display: flex;
     align-items: center;
+    margin: 10px 50px;
 }
 
 .logo {
@@ -32,14 +26,16 @@
 
 main {
     display: flex;
-    /* flex-grow: 1; */
     justify-content: center;
+    align-items: center;
     background-color: aquamarine;
+    height: calc(100vh - 100px);
 }
 
 #grid {
     display: flex;
     align-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     width: 500px;
     height: 500px;
@@ -79,3 +75,7 @@ main {
     pointer-events: none;
 }
 
+footer {
+    height: 50px;
+    padding: 10px;
+}
