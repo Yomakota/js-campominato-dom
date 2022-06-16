@@ -17,22 +17,24 @@
 
 const playBtn = document.getElementById('play');
 
+// al click si attiva funzione start
 playBtn.addEventListener('click', start);
 
 function start () {
-
+    //  HTML elements
     const grid = document.getElementById('grid');
-    const messCont = document.getElementById('message');
+    const messContainer = document.getElementById('message');
 
+    // con ='' svuoto la griglia e le tolgo le classi per una nuova partita al click di playBtn
     grid.innerHTML = '';
     grid.className = '';
-
     message.innerHTML = '';
 
+    // tutte le var per questa funzione le dichiaro in alto
     const bombsNum = 16;
     const minRange = 1;
 
-    let gameLevel = document.getElementById('level').value;
+    const gameLevel = document.getElementById('level').value;
     let gameRangeNum;
     let gridLevel;
 
@@ -52,21 +54,17 @@ function start () {
             break;
     }
 
-    console.log(gameRangeNum);
-
     const bombs = generateBomb(bombsNum, minRange, gameRangeNum);
-    console.log(bombs);
-
-    const numAttempts = gameRangeNum - bombsNum;   console.log(numAttempts);
-
+    const numAttempts = gameRangeNum - bombsNum;
     const userAttempts = [];
 
     generateGrid();
-
+    // function grid per generare griglia dentro function start
     function generateGrid() {
-        // aggiungere classe alla griglia per decidere livello
+        // aggiungere classe che assegna il numeri di quadrati per livello alla griglia
         grid.classList.add(gridLevel);
 
+        // for per creare i quadrati della griglia
         for (let i = 1; i <= gameRangeNum; i++) {
             const cell = document.createElement('div');
             cell.innerHTML = `<span>${i}</span>`;
@@ -78,40 +76,65 @@ function start () {
     }
 
     function squareClick() {
+        // funzione per gestire click su ogni cell
 
-
-        this.classList.add('clicked');
+        // alle celle cliccate aggiungo classe clicked e no pointer per non 'riclickarla'
+        this.classList.add('clicked', 'no-pointer');
         let attempts = this.innerText;
-        console.log(attempts);
         
-
+        // seleziono il numero dentro le celle per poi attacare la classe bomb
         let bombNum = parseInt(this.querySelector('span').innerHTML);
-        console.log(bombNum);
 
+        // se celle fanno parte della lista bombe
         if (bombs.includes(bombNum)) {
             this.classList.add('bomb');
-            grid.classList.add('no-pointer');
-            let message = document.createElement('div');
-            message = document.innerHTML = `Peccato hai perso :-( Hai azzeccato ${userAttempts.length} tentativi.Gioca ancora`;
-            console.log('message');
-            messCont.append(message);
+            // e finisco il gioco
+            endGame('lost');
 
         } else {
 
+            // altrimenti salvo il numero in un array tentativi
             if (!userAttempts.includes(attempts)) {
                 userAttempts.push(attempts);
-                console.log(userAttempts);
             }
-
+            // se l'array tentativi eguaglia il numero di tentativi massimi
             if (userAttempts.length == numAttempts ) {
-                console.log(userAttempts);
-                let message = document.createElement('div');
-                message = document.innerHTML = `Congratulazioni,HAI VINTO.Il tuo punteggio è ${userAttempts.length * 10}.Gioca ancora`;
-                console.log('message');
-                messCont.append(message);
+                // finisco il gioco con vittoria
+                endGame('won');
             }
 
         }
+    }
+    
+    // function per finire il gioco e stampare il messaggio con punteggio
+    function endGame (result) {
+        //  creo div per riempirlo con messaggio
+        let message = document.createElement('div');
+        
+        if(result === 'won') {
+            message = document.innerHTML = `Congratulazioni,HAI VINTO.Il tuo punteggio è ${userAttempts.length * 10}.Gioca ancora`;
+            messContainer.append(message);
+
+        } else {
+            message = document.innerHTML = `Peccato hai perso :-( Hai azzeccato ${userAttempts.length} tentativi.Gioca ancora`;
+            messContainer.append(message);
+        }
+
+        // seleziono tutti i quadrati per aggiungere la classe no-pointer alla fine del gioco
+        const allCell = document.querySelectorAll('.square');
+        for (let i = 0; i < allCell.length; i++) {
+            const singleCell = allCell[i]; 
+
+            singleCell.classList.add('no-pointer');
+
+            const allBombs = parseInt(singleCell.querySelector('span').innerHTML);
+            
+            // e la classe bomb per renderle visibili alla fine del gioco
+            if (bombs.includes(allBombs)) {
+                singleCell.classList.add('bomb');
+            }
+        }
+
     }
 }
 
