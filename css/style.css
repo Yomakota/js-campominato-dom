@@ -42,8 +42,6 @@ main {
     height: 500px;
 }
 
-.message {}
-
 .square {
     display: flex;
     justify-content: center;

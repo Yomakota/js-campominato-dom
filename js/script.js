@@ -27,6 +27,8 @@ function start () {
     grid.innerHTML = '';
     grid.className = '';
 
+    message.innerHTML = '';
+
     const bombsNum = 16;
     const minRange = 1;
 
